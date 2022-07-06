@@ -4,6 +4,7 @@ import com.example.jwthero.entities.Post;
 import com.example.jwthero.entities.User;
 import com.example.jwthero.repos.PostRepository;
 import com.example.jwthero.requests.PostCreateRequest;
+import com.example.jwthero.requests.PostUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class PostService {
 
 
     public Post createOnePost(PostCreateRequest newPostRequest) {
-        User user= userService.getOneUser(newPostRequest.getUserId());
+        User user= userService.getOneUserById(newPostRequest.getUserId());
         if(user==null)
             return null;
         Post toSave = new Post();
@@ -42,5 +43,21 @@ public class PostService {
         toSave.setUser(user);
         return postRepository.save(toSave);
 
+    }
+
+    public Post updateOnePostById(Long postId, PostUpdateRequest updatePost) {
+        Optional<Post> post = postRepository.findById(postId);
+        if(post.isPresent()) {
+            Post toUpdate=post.get();
+            toUpdate.setText(updatePost.getText());
+            toUpdate.setTitle(updatePost.getTitle());
+            postRepository.save(toUpdate);
+            return toUpdate;
+        }
+        return null;
+    }
+
+    public void deleteOnePostById(Long postId) {
+        postRepository.deleteById(postId);
     }
 }

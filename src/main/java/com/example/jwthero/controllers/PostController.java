@@ -3,6 +3,7 @@ package com.example.jwthero.controllers;
 
 import com.example.jwthero.entities.Post;
 import com.example.jwthero.requests.PostCreateRequest;
+import com.example.jwthero.requests.PostUpdateRequest;
 import com.example.jwthero.services.PostService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +30,19 @@ public class PostController {
         return postService.createOnePost(newPostRequest);
     }
 
-    @GetMapping("/{post_id}")
+    @GetMapping("/{postId}")
     public Post getOnePost(@PathVariable Long postId) {
         return postService.getOnePostById(postId);
+    }
+
+    @PutMapping("/{postId}")
+    public Post updateOnePost(@PathVariable Long postId, @RequestBody PostUpdateRequest updatePost) {
+        return postService.updateOnePostById(postId,updatePost);
+    }
+    @DeleteMapping("/{postId}")
+    public void deleteOnePost(@PathVariable Long postId) {
+        postService.deleteOnePostById(postId);
+
     }
 
 }
